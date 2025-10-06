@@ -1,4 +1,5 @@
-[title]: <> (Vitalik Buterin's website)
+[title]: <> (For All The Fish)
 [icon]: <> (http://vitalik.ca/images/icon.png)
-[server]: <> (root@vitalik.ca)
-[website_root]: <> (/var/www/html)
+[domain]: <> (https://huugof.github.io/forallthefish)
+[posts_directory]: <> (./posts)
+
