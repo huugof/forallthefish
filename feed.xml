@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<rss version="2.0">
+<channel>
+  <title>For All The Fish</title>
+  <link>https://huugof.github.io/forallthefish/</link>
+  <description>For All The Fish</description>
+  <image>
+      <url>http://vitalik.ca/images/icon.png</url>
+      <title>For All The Fish</title>
+      <link>https://huugof.github.io/forallthefish/</link>
+  </image>
+
+<item>
+<title>New Note</title>
+<link>https://huugof.github.io/forallthefish/./posts/2025/10/06/new-note.html</link>
+<guid>https://huugof.github.io/forallthefish/./posts/2025/10/06/new-note.html</guid>
+<pubDate>Mon, 06 Oct 2025 00:00:00 +0000</pubDate>
+<description></description>
+</item>
+
+
+<item>
+<title>Last Test</title>
+<link>https://huugof.github.io/forallthefish/./posts/2025/10/06/last-test.html</link>
+<guid>https://huugof.github.io/forallthefish/./posts/2025/10/06/last-test.html</guid>
+<pubDate>Mon, 06 Oct 2025 00:00:00 +0000</pubDate>
+<description></description>
+</item>
+
+
+<item>
+<title>Hello world</title>
+<link>https://huugof.github.io/forallthefish/./posts/2025/10/05/hello.html</link>
+<guid>https://huugof.github.io/forallthefish/./posts/2025/10/05/hello.html</guid>
+<pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+<description></description>
+</item>
+
+</channel>
+</rss>
