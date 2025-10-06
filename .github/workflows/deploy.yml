@@ -1,32 +1,49 @@
-name: Deploy site
+name: Build & Deploy Pages
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write   # needed by peaceiris to push to gh-pages
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
+      - uses: pandoc/actions/setup@v1
 
-      # Install pandoc on the runner
-      - name: Setup Pandoc
-        uses: pandoc/actions/setup@v1
-        # with:
-        #   version: '3.2'   # optional; omit to get latest
-        # This installs pandoc and adds it to PATH. :contentReference[oaicite:0]{index=0}
+      - name: Build site into ./site
+        run: |
+          python3 publish.py posts/*
+          test -f site/index.html || (echo "No site/index.html" && exit 1)
 
-      - name: Build site
-        run: python3 publish.py posts/*
+      - name: Inspect build
+        run: |
+          echo "Built files:" && find site -maxdepth 2 -type f | sort
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./site
+          path: ./site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
