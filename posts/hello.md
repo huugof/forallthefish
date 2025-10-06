@@ -1,5 +1,5 @@
 [category]: <> (General)
-[date]: <> (2020/10/24)
+[date]: <> (2025/10/05)
 [title]: <> (Hello world)
 
 This is a blog post!
