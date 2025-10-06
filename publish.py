@@ -61,38 +61,67 @@ MathJax = {
 
 TOGGLE_COLOR_SCHEME_JS = """
 <script type="text/javascript">
-  // Update root html class to set CSS colors
-  const toggleDarkMode = () => {
-    const root = document.querySelector('html');
-    root.classList.toggle('dark');
-  }
+  (function () {
+    const root = document.documentElement;
+    const toggle = document.querySelector('#color-mode-switch input[type="checkbox"]');
 
-  // Update local storage value for colorScheme
-  const toggleColorScheme = () => {
-    const colorScheme = localStorage.getItem('colorScheme');
-    if (colorScheme === 'light') localStorage.setItem('colorScheme', 'dark');
-    else localStorage.setItem('colorScheme', 'light');
-  }
+    const setScheme = (scheme, { persist = true } = {}) => {
+      const normalized = scheme === 'dark' ? 'dark' : 'light';
+      root.classList.toggle('dark', normalized === 'dark');
+      root.classList.toggle('light', normalized === 'light');
+      if (toggle) toggle.checked = normalized === 'dark';
+      if (!persist) return;
+      try {
+        localStorage.setItem('colorScheme', normalized);
+      } catch (error) {
+        // localStorage unavailable (e.g., privacy mode)
+      }
+    };
 
-  // Set toggle input handler
-  const toggle = document.querySelector('#color-mode-switch input[type="checkbox"]');
-  if (toggle) toggle.onclick = () => {
-    toggleDarkMode();
-    toggleColorScheme();
-  }
+    const initScheme = () => {
+      let storedScheme;
+      try {
+        storedScheme = localStorage.getItem('colorScheme');
+      } catch (error) {
+        storedScheme = null;
+      }
 
-  // Check for color scheme on init
-  const checkColorScheme = () => {
-    const colorScheme = localStorage.getItem('colorScheme');
-    // Default to light for first view
-    if (colorScheme === null || colorScheme === undefined) localStorage.setItem('colorScheme', 'light');
-    // If previously saved to dark, toggle switch and update colors
-    if (colorScheme === 'dark') {
-      toggle.checked = true;
-      toggleDarkMode();
+      if (storedScheme === 'dark' || storedScheme === 'light') {
+        setScheme(storedScheme, { persist: false });
+        return;
+      }
+
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setScheme(prefersDark ? 'dark' : 'light', { persist: false });
+    };
+
+    if (toggle) {
+      toggle.addEventListener('click', () => {
+        setScheme(toggle.checked ? 'dark' : 'light');
+      });
     }
-  }
-  checkColorScheme();
+
+    if (window.matchMedia) {
+      const mq = window.matchMedia('(prefers-color-scheme: dark)');
+      const handleChange = (event) => {
+        let storedScheme;
+        try {
+          storedScheme = localStorage.getItem('colorScheme');
+        } catch (error) {
+          storedScheme = null;
+        }
+        if (storedScheme === 'dark' || storedScheme === 'light') return;
+        setScheme(event.matches ? 'dark' : 'light', { persist: false });
+      };
+      if (typeof mq.addEventListener === 'function') {
+        mq.addEventListener('change', handleChange);
+      } else if (typeof mq.addListener === 'function') {
+        mq.addListener(handleChange);
+      }
+    }
+
+    initScheme();
+  })();
 </script>
 """
 
