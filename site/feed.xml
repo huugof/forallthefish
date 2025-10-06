@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<rss version="2.0">
+<channel>
+  <title>For All The Fish</title>
+  <link>http://localhost:5500/</link>
+  <description>For All The Fish</description>
+  <image>
+      <url>http://vitalik.ca/images/icon.png</url>
+      <title>For All The Fish</title>
+      <link>http://localhost:5500/</link>
+  </image>
+
+<item>
+<title>Hello world</title>
+<link>http://localhost:5500/./posts/2025/10/06/hello.html</link>
+<guid>http://localhost:5500/./posts/2025/10/06/hello.html</guid>
+<pubDate>Mon, 06 Oct 2025 00:00:00 +0000</pubDate>
+<description></description>
+</item>
+
+</channel>
+</rss>
