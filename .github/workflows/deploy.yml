@@ -4,12 +4,27 @@ on:
     branches: [ main ]
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write   # needed by peaceiris to push to gh-pages
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      # Install pandoc on the runner
+      - name: Setup Pandoc
+        uses: pandoc/actions/setup@v1
+        # with:
+        #   version: '3.2'   # optional; omit to get latest
+        # This installs pandoc and adds it to PATH. :contentReference[oaicite:0]{index=0}
+
       - name: Build site
         run: python3 publish.py posts/*
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
